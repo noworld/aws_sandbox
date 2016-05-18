@@ -1,0 +1,58 @@
+
+body {
+	background-color: black;
+}
+
+#main {
+	width: 80%;
+	padding-left: 10%;
+	font-family: 'Orbitron', sans-serif;
+	font-size: x-large;
+	color: #666699;
+}
+
+#titleblock {
+	font-size: xx-large;
+	padding: 0 0 25px;
+}
+
+#textblock {
+	font-family: 'Share Tech Mono';
+	color: #6666FF;
+	display: none;
+}
+
+#access {
+	display:none;
+}
+
+p:nth-child(odd) {
+	color: #666699;
+}
+
+form span {
+	width: 20%;
+	margin: 20px 5px 20px 5px;
+	color: #F0F0F0;
+	float: left;
+	text-align: right;
+	vertical-align: middle;
+}
+
+input {
+	margin: 20px 5px 20px 5px;
+	background-color: #101010;
+	border-width: 1px;
+	border-color: #331429;
+	color: #666699;
+	font-family: 'Share Tech Mono';
+	font-size: x-large;
+}
+
+input[type="submit"] {
+	font-family: 'Orbitron', sans-serif;
+}
+
+canvas {
+	width: 100%;
+}

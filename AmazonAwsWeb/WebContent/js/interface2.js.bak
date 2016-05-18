@@ -1,0 +1,103 @@
+var screen = [""];
+var cursor = "_";
+var speed = 0;
+var ctx = null;
+var canvas = null;
+var termFont = "18px VT323";
+var termFillStyle = "rgba(0, 255, 156, 1.0)";
+var termWidth = 80;
+var termHeight = 24;
+var lineTab = 10;
+var lineHeight = 15;
+
+function startInterface() {
+	
+	//Set up keyboard and start drawing
+	$.getScript("js/keycodes.js",function() {
+		$.getScript("js/keystrokes.js", function() {
+			initCanvas();
+		});
+	});
+	
+}
+
+function initCanvas() {
+	canvas = $("#textInterface")[0];
+	
+	if(canvas.getContext) {
+		console.log("Drawing with 2d canvas.");
+		ctx = canvas.getContext("2d");
+		$(document).keydown(onKeyDown);
+		$(document).keyup(onKeyUp);
+		$("#btn_clear").click(clearScreen);
+		clear(ctx, canvas);
+	} else {
+		console.log("No canvas.");
+		canvas.html("Text here");
+	}
+}
+
+function clearScreen() {
+	screen = "";
+	clear(ctx, canvas);
+}
+
+
+function clear(ctx, canvas) {
+	ctx.fillStyle = termFillStyle;
+	ctx.font = termFont;
+	devicePixelRatio = window.devicePixelRatio || 1,
+    backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+    	ctx.mozBackingStorePixelRatio ||
+    	ctx.msBackingStorePixelRatio ||
+    	ctx.oBackingStorePixelRatio ||
+    	ctx.backingStorePixelRatio || 1,
+
+    ratio = devicePixelRatio / backingStoreRatio;
+	
+	//clientWidth, offsetWidth
+	var oldWidth = canvas.clientWidth;
+    var oldHeight = canvas.clientHeight;
+
+    canvas.width = oldWidth * ratio;
+    canvas.height = oldHeight * ratio;
+
+    canvas.style.width = oldWidth + 'px';
+    canvas.style.height = oldHeight + 'px';
+    ctx.scale(ratio, ratio);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function draw(ctx) {
+	ctx.fillStyle = "rgba(102, 102, 256, 1.0)";
+	drawScreenText(ctx);
+} 
+
+function drawScreenText(ctx) {
+	ctx.fillStyle = termFillStyle;
+	ctx.font = termFont;
+	for(var i = 0; i < screen.length && i < termHeight; i++) {
+		ctx.fillText(screen[i],lineTab,lineHeight*(i+1));
+	}
+	
+}
+
+function drawCursor() {
+	var line = getCurrLine();
+	var cursorPos = ctx.measureText(line).width;
+	ctx.fillText(cursor,cursorPos,lineHeight*screen.lengt);
+}
+
+function getCurrLine() {
+	return screen[screen.length-1];
+}
+
+function setCurrLine(line) {
+	screen[screen.length-1] = line;
+}
+
+function appendCurrLine(c) {
+	var line = getCurrLine();
+	line += c;
+	setCurrLine(line);
+}
